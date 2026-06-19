@@ -187,6 +187,13 @@
   .winfo .bd b{color:var(--text);font-weight:500}
   .winfo .bd i{width:8px;height:8px;border-radius:2px;flex:0 0 auto;display:inline-block}
   .winfo .bd.b i{background:var(--accent)}.winfo .bd.k i{background:var(--dimmer)}
+  .winfo .wclin{font-size:12px;line-height:1.5;color:var(--dim);margin-top:11px;border-top:1px solid var(--line-soft);padding-top:10px}
+  .winfo .wlink{display:inline-block;margin-top:9px;font-family:var(--mono);font-size:12px;color:var(--accent);text-decoration:none}
+  .winfo .wlink:hover{text-decoration:underline;text-underline-offset:2px}
+  .ctxlong{margin-top:8px;color:var(--dim);font-size:12.5px;line-height:1.55}
+  .ctxmore{display:inline-block;margin-top:8px;background:none;border:none;padding:2px 0;cursor:pointer;
+    font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--accent)}
+  .ctxmore:hover{text-decoration:underline;text-underline-offset:2px}
   .viewer input[type=range]::-webkit-slider-thumb{width:20px;height:20px;border-width:3px}
   .viewer input[type=range]::-moz-range-thumb{width:16px;height:16px;border-width:3px}
   .info{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:16px}
@@ -239,7 +246,7 @@
           <div class="anat" id="anatLayer"></div></div>
         <div class="slicebar"><input id="slice" type="range" min="0" max="6" step="1" value="3" aria-label="Slice"><b id="slice-z" class="slz">z=96</b></div>
       </div>
-      <div class="ctxhelp" id="ctxHelp"></div>
+      <div class="ctxhelp" id="ctxHelp"><div id="ctxShort"></div><div id="ctxLong" class="ctxlong" hidden></div><button class="ctxmore" id="ctxMoreBtn" type="button"></button></div>
       <div class="viewer">
         <details class="grp adv" id="grpDisplay"><summary data-i18n="grpDisplay">Anzeige</summary><div class="gbody">
           <div class="vctl"><span class="vlab" data-i18n="fieldLblG">Feldst&auml;rke</span>
@@ -337,6 +344,8 @@
         <p class="wdesc" id="winfoDesc"></p>
         <div class="wbd"><span class="bd b"><i></i><span data-i18n="brightWord">hell</span>:&nbsp;<b id="winfoBright"></b></span>
           <span class="bd k"><i></i><span data-i18n="darkWord">dunkel</span>:&nbsp;<b id="winfoDark"></b></span></div>
+        <p class="wclin" id="winfoClin"></p>
+        <a class="wlink" id="winfoLink" href="#" target="_blank" rel="noopener"></a>
       </div>
       <div class="info adv"><h2 data-i18n="glossTitle">Glossar</h2><div id="gloss"></div></div>
     </div>
@@ -379,7 +388,7 @@
         wMix:"gemischt",tCsf:"Liquor (CSF)",tGm:"Graue Substanz",tWm:"Weiße Substanz",tFat:"Fett / Skalp",tLes:"Läsion",
         quizTitle:"Quiz · Wichtung erkennen",quizExit:"Quiz beenden",qPrompt:"Welche Wichtung zeigt dieses Bild?",qNext:"Nächste Frage",
         qGood:"Richtig! ",qBad:"Leider falsch. Richtig: ",ernst:"Ernst ≈",
-        glossTitle:"Glossar · was die Parameter bedeuten",eqADC:"ADC-Karte: Helligkeit ∝ ADC",viewerTitle:"Viewer",wlReset:"Reset",sliceLbl:"Schicht",winLbl:"Fenster · Kontrast",levLbl:"Helligkeit",planeLbl:"Ebene",noiseLbl:"Rauschen",pngBtn:"PNG",shareBtn:"Link",probeHint:"Tipp ins Bild für Werte",lesTypeLbl:"Typ",tEdema:"Ödem (vasogen)",tInfarct:"Infarkt (akut)",tTumor:"Tumor",tMs:"MS-Herd",anaTitle:"Analyse",cnrLbl:"Kontrast",sweepTE:"Signal über TE",sweepB:"Signal über b",optTE:"max @ TE {x}",optB:"max @ b {x}",shareCopied:"Link kopiert",sigWord:"Signal",cmpBtn:"Vergleich",anatBtn:"Anatomie-Labels",uiSimple:"Einfach",uiPro:"Pro",grpDisplay:"Anzeige",grpTools:"Werkzeuge",grpAnalysis:"Analyse",fieldLblG:"Feldstärke",winfoHdr:"Bildtyp · Erklärung",brightWord:"hell",darkWord:"dunkel",
+        glossTitle:"Glossar · was die Parameter bedeuten",eqADC:"ADC-Karte: Helligkeit ∝ ADC",viewerTitle:"Viewer",wlReset:"Reset",sliceLbl:"Schicht",winLbl:"Fenster · Kontrast",levLbl:"Helligkeit",planeLbl:"Ebene",noiseLbl:"Rauschen",pngBtn:"PNG",shareBtn:"Link",probeHint:"Tipp ins Bild für Werte",lesTypeLbl:"Typ",tEdema:"Ödem (vasogen)",tInfarct:"Infarkt (akut)",tTumor:"Tumor",tMs:"MS-Herd",anaTitle:"Analyse",cnrLbl:"Kontrast",sweepTE:"Signal über TE",sweepB:"Signal über b",optTE:"max @ TE {x}",optB:"max @ b {x}",shareCopied:"Link kopiert",sigWord:"Signal",cmpBtn:"Vergleich",anatBtn:"Anatomie-Labels",uiSimple:"Einfach",uiPro:"Pro",grpDisplay:"Anzeige",grpTools:"Werkzeuge",grpAnalysis:"Analyse",fieldLblG:"Feldstärke",winfoHdr:"Bildtyp · Erklärung",brightWord:"hell",darkWord:"dunkel",moreWord:"mehr ▾",lessWord:"weniger ▴",learnMore:"Mehr dazu →",ctx_se2:"Kurzes TR/kurzes TE betont T1, langes TR/langes TE betont T2, langes TR/kurzes TE ergibt PD. Spin-Echo ist robust gegen Feldinhomogenitäten, aber langsamer als Gradientenecho.",ctx_ir2:"Der 180°-Vorpuls invertiert die Magnetisierung; nach der Zeit TI durchläuft jedes Gewebe seinen Nullpunkt. Trifft man ihn genau, gibt dieses Gewebe kein Signal – so unterdrückt FLAIR den Liquor und STIR das Fett.",ctx_gre2:"Statt 180°-Puls nutzt GRE Gradienten und einen kleinen Flipwinkel – schnell, aber empfindlich gegen Feldinhomogenitäten (T2*). Großer Flip + kurzes TR → T1, langes TE → T2*.",ctx_swi2:"SWI nutzt zusätzlich die Phaseninformation und ist extrem empfindlich für Blutabbau und Eisen. Kleine Blutungen erscheinen größer als sie sind (Blooming).",ctx_dwi2:"Der b-Wert misst, wie frei sich Wasser bewegt. Beim akuten Infarkt ist die Diffusion eingeschränkt → hell. Vorsicht: auch langes T2 kann hell erscheinen (T2-Durchscheinen).",ctx_adc2:"Die ADC-Karte rechnet das T2-Durchscheinen heraus. Echte Restriktion ist hier dunkel – DWI und ADC immer zusammen beurteilen.",
         ctx_se:"Spin-Echo (SE): Das Grundverfahren mit 90°- und 180°-Puls. TR steuert den T1-, TE den T2-Anteil — so wählst du T1-, T2- oder PD-Wichtung.",
         ctx_ir:"Inversion Recovery (IR): Ein vorgeschalteter 180°-Puls kippt die Magnetisierung, danach wartet man die Zeit TI. Liegt ein Gewebe im Nulldurchgang, wird sein Signal unterdrückt — daraus entstehen FLAIR (Liquor weg) und STIR (Fett weg).",
         ctx_gre:"Gradientenecho (GRE): Statt 180°-Puls ein kleiner Flipwinkel α, refokussiert per Gradient. Schnell, T2*-gewichtet und empfindlich für Suszeptibilität — Basis vieler 3D- und Angio-Sequenzen.",
@@ -400,7 +409,7 @@
         wMix:"mixed",tCsf:"CSF",tGm:"Gray matter",tWm:"White matter",tFat:"Fat / scalp",tLes:"Lesion",
         quizTitle:"Quiz · name the weighting",quizExit:"Exit quiz",qPrompt:"Which weighting is shown here?",qNext:"Next question",
         qGood:"Correct! ",qBad:"Not quite. Answer: ",ernst:"Ernst ≈",
-        glossTitle:"Glossary · what the parameters mean",eqADC:"ADC map: brightness ∝ ADC",viewerTitle:"Viewer",wlReset:"Reset",sliceLbl:"Slice",winLbl:"Window · contrast",levLbl:"Brightness",planeLbl:"Plane",noiseLbl:"Noise",pngBtn:"PNG",shareBtn:"Link",probeHint:"Tap the image for values",lesTypeLbl:"Type",tEdema:"Edema (vasogenic)",tInfarct:"Infarct (acute)",tTumor:"Tumor",tMs:"MS lesion",anaTitle:"Analysis",cnrLbl:"Contrast",sweepTE:"signal vs TE",sweepB:"signal vs b",optTE:"max @ TE {x}",optB:"max @ b {x}",shareCopied:"Link copied",sigWord:"signal",cmpBtn:"Compare",anatBtn:"Anatomy labels",uiSimple:"Simple",uiPro:"Pro",grpDisplay:"Display",grpTools:"Tools",grpAnalysis:"Analysis",fieldLblG:"Field strength",winfoHdr:"Image type · explanation",brightWord:"bright",darkWord:"dark",
+        glossTitle:"Glossary · what the parameters mean",eqADC:"ADC map: brightness ∝ ADC",viewerTitle:"Viewer",wlReset:"Reset",sliceLbl:"Slice",winLbl:"Window · contrast",levLbl:"Brightness",planeLbl:"Plane",noiseLbl:"Noise",pngBtn:"PNG",shareBtn:"Link",probeHint:"Tap the image for values",lesTypeLbl:"Type",tEdema:"Edema (vasogenic)",tInfarct:"Infarct (acute)",tTumor:"Tumor",tMs:"MS lesion",anaTitle:"Analysis",cnrLbl:"Contrast",sweepTE:"signal vs TE",sweepB:"signal vs b",optTE:"max @ TE {x}",optB:"max @ b {x}",shareCopied:"Link copied",sigWord:"signal",cmpBtn:"Compare",anatBtn:"Anatomy labels",uiSimple:"Simple",uiPro:"Pro",grpDisplay:"Display",grpTools:"Tools",grpAnalysis:"Analysis",fieldLblG:"Field strength",winfoHdr:"Image type · explanation",brightWord:"bright",darkWord:"dark",moreWord:"more ▾",lessWord:"less ▴",learnMore:"Learn more →",ctx_se2:"Short TR/short TE emphasises T1, long TR/long TE emphasises T2, long TR/short TE gives PD. Spin echo is robust against field inhomogeneity but slower than gradient echo.",ctx_ir2:"The 180° prep pulse inverts the magnetization; after time TI every tissue passes through its null. Hit it exactly and that tissue gives no signal – this is how FLAIR nulls CSF and STIR nulls fat.",ctx_gre2:"Instead of a 180° pulse, GRE uses gradients and a small flip angle – fast but sensitive to field inhomogeneity (T2*). Large flip + short TR → T1, long TE → T2*.",ctx_swi2:"SWI also uses the phase information and is extremely sensitive to blood products and iron. Small bleeds look larger than they are (blooming).",ctx_dwi2:"The b-value measures how freely water moves. In acute infarct diffusion is restricted → bright. Caution: long T2 can also look bright (T2 shine-through).",ctx_adc2:"The ADC map removes T2 shine-through. True restriction is dark here – always read DWI and ADC together.",
         ctx_se:"Spin echo (SE): The basic method with 90° and 180° pulses. TR sets the T1 contribution, TE the T2 one — that lets you pick T1-, T2- or PD-weighting.",
         ctx_ir:"Inversion recovery (IR): An extra 180° pulse flips the magnetization, then you wait the time TI. A tissue at its null point is suppressed — this is how FLAIR (no CSF) and STIR (no fat) are made.",
         ctx_gre:"Gradient echo (GRE): Instead of a 180° pulse a small flip angle α, refocused by a gradient. Fast, T2*-weighted and sensitive to susceptibility — the basis of many 3D and angio sequences.",
@@ -635,8 +644,16 @@
   function winfoKey(w){if(!w)return"mix";if(w==="T1")return"t1";if(w==="T2")return"t2";if(w==="PD")return"pd";
     if(w==="FLAIR")return"flair";if(w==="STIR")return"stir";if(w==="IR")return"ir";if(w==="T2*")return"t2star";
     if(w.indexOf("GRE")>=0)return"t1gre";if(w.indexOf("SWI")>=0)return"swi";if(w==="ADC")return"adc";if(w.indexOf("DWI")>=0)return"dwi";return"mix";}
-  function updateWInfo(c){const G=(WINFO[lang]||WINFO.en),W=G[winfoKey(c.w)]||G.mix;
-    $("winfoTitle").textContent=W.t;$("winfoDesc").textContent=W.d;$("winfoBright").textContent=W.b;$("winfoDark").textContent=W.k;}
+  const WURL={t1:"https://en.wikipedia.org/wiki/MRI_sequence",t2:"https://en.wikipedia.org/wiki/MRI_sequence",pd:"https://en.wikipedia.org/wiki/MRI_sequence",mix:"https://en.wikipedia.org/wiki/MRI_sequence",
+    flair:"https://radiopaedia.org/articles/fluid-attenuated-inversion-recovery",stir:"https://en.wikipedia.org/wiki/MRI_sequence",ir:"https://en.wikipedia.org/wiki/MRI_sequence",
+    t1gre:"https://en.wikipedia.org/wiki/MRI_sequence",t2star:"https://en.wikipedia.org/wiki/MRI_sequence",swi:"https://en.wikipedia.org/wiki/MRI_sequence",
+    dwi:"https://en.wikipedia.org/wiki/Diffusion_MRI",adc:"https://en.wikipedia.org/wiki/Diffusion_MRI"};
+  const WCLIN={de:{t1:"Klinisch: Anatomie, Fettnachweis, Kontrastmittel-Aufnahme (Tumor, Entzündung).",t2:"Klinisch: Ödem, Entzündung, viele Läsionen – das Arbeitspferd.",pd:"Klinisch: Gelenke/Knorpel und einige Hirnstrukturen.",mix:"Tipp: TR/TE klarer einstellen für eine reine Wichtung.",flair:"Klinisch: MS-Herde, periventrikuläre Läsionen, Subarachnoidalblutung.",stir:"Klinisch: Knochen- und Weichteilödem – wo Fett stört.",ir:"Tipp: TI bestimmt das ausgelöschte Gewebe (Liquor→FLAIR, Fett→STIR).",t1gre:"Klinisch: schnelle 3D-T1-Aufnahmen, oft nach Kontrastmittel.",t2star:"Klinisch: Blutungen, Verkalkungen, Eisen.",swi:"Klinisch: Mikroblutungen, Kavernome, Gefäße – sehr blutsensitiv.",dwi:"Klinisch: akuter Schlaganfall, Abszess, hochzellige Tumoren.",adc:"Klinisch: bestätigt echte Diffusionsrestriktion (Infarkt = dunkel)."},
+    en:{t1:"Clinical: anatomy, fat detection, contrast enhancement (tumour, inflammation).",t2:"Clinical: oedema, inflammation, most lesions – the workhorse.",pd:"Clinical: joints/cartilage and some brain structures.",mix:"Tip: set TR/TE more clearly for a pure weighting.",flair:"Clinical: MS plaques, periventricular lesions, subarachnoid haemorrhage.",stir:"Clinical: bone and soft-tissue oedema – wherever fat is in the way.",ir:"Tip: TI sets the nulled tissue (CSF→FLAIR, fat→STIR).",t1gre:"Clinical: fast 3D T1 scans, often after contrast.",t2star:"Clinical: haemorrhage, calcification, iron.",swi:"Clinical: microbleeds, cavernomas, veins – very blood-sensitive.",dwi:"Clinical: acute stroke, abscess, highly cellular tumours.",adc:"Clinical: confirms true diffusion restriction (infarct = dark)."}};
+  function updateWInfo(c){const k=winfoKey(c.w),G=(WINFO[lang]||WINFO.en),W=G[k]||G.mix,t=I[lang];
+    $("winfoTitle").textContent=W.t;$("winfoDesc").textContent=W.d;$("winfoBright").textContent=W.b;$("winfoDark").textContent=W.k;
+    $("winfoClin").textContent=(WCLIN[lang]||WCLIN.en)[k]||"";
+    const a=$("winfoLink");a.href=WURL[k]||WURL.mix;a.textContent=t.learnMore;}
 
   function update(){
     const p=curParams(),t=I[lang];
@@ -665,7 +682,9 @@
     for(const k of keys){if(!rows[k])continue;rows[k].bar.style.width=(100*vals[k]/mx).toFixed(0)+"%";
       rows[k].ctx.textContent=(actx==="T2")?T[k].T2:(actx==="T2*")?T[k].T2s:T[k].ADC.toFixed(2);}
     const chKey=(mode==="dwi")?(dwiView==="adc"?"ctx_adc":"ctx_dwi"):("ctx_"+mode);
-    ctxHelpEl.innerHTML=(t[chKey]||"").replace(/^([^:]+:)/,'<b>$1</b>');
+    $("ctxShort").innerHTML=(t[chKey]||"").replace(/^([^:]+:)/,'<b>$1</b>');
+    {const lng=t[chKey+"2"]||"",mb=$("ctxMoreBtn");$("ctxLong").textContent=lng;mb.hidden=!lng;
+     mb.textContent=$("ctxLong").hidden?t.moreWord:t.lessWord;}
     drawCurves(p);updateCNR(p);updateLesSub();
     if(probe&&lastBuf){const i=probe.py*W+probe.px;
       const fr={csf:CSF[i],gray:GM[i],white:WM[i],fat:FAT[i]};if(lesion)fr.les=LES[i];
@@ -848,6 +867,7 @@
   $("cmpTog").addEventListener("click",()=>{compareOn=!compareOn;$("cmpTog").setAttribute("aria-pressed",compareOn);$("cmpSel").disabled=!compareOn;if(compareOn)probe=null;update();});
   $("cmpSel").addEventListener("change",e=>{cmpPreset=e.target.value;update();});
   $("anatTog").addEventListener("click",()=>{anatOn=!anatOn;$("anatTog").setAttribute("aria-pressed",anatOn);update();});
+  $("ctxMoreBtn").addEventListener("click",()=>{const l=$("ctxLong");l.hidden=!l.hidden;$("ctxMoreBtn").textContent=l.hidden?I[lang].moreWord:I[lang].lessWord;});
   cv.addEventListener("click",e=>{const r=cv.getBoundingClientRect();const px=Math.floor((e.clientX-r.left)/r.width*W),py=Math.floor((e.clientY-r.top)/r.height*H);
     if(px>=0&&px<W&&py>=0&&py<H){probe={px:px,py:py};update();}});
   $("pngBtn").addEventListener("click",()=>{const tmp=document.createElement("canvas"),SZ=512;tmp.width=tmp.height=SZ;const tc=tmp.getContext("2d");tc.imageSmoothingEnabled=false;tc.drawImage(cv,0,0,SZ,SZ);
