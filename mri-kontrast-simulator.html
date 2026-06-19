@@ -190,10 +190,29 @@
   .winfo .wclin{font-size:12px;line-height:1.5;color:var(--dim);margin-top:11px;border-top:1px solid var(--line-soft);padding-top:10px}
   .winfo .wlink{display:inline-block;margin-top:9px;font-family:var(--mono);font-size:12px;color:var(--accent);text-decoration:none}
   .winfo .wlink:hover{text-decoration:underline;text-underline-offset:2px}
+  .wtry{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:13px}
+  .wtry .trylab{font-family:var(--mono);font-size:11px;color:var(--dim);margin-right:2px}
+  .chip{background:var(--panel-2);border:1px solid var(--line);color:var(--text);border-radius:14px;padding:5px 11px;font-family:var(--mono);font-size:11px;cursor:pointer;min-height:30px}
+  .chip:hover{border-color:var(--accent);color:var(--accent)}
+  .chip.on{background:var(--accent);color:#04181a;border-color:var(--accent)}
+  .wpit{font-size:12px;line-height:1.5;color:var(--amber);opacity:.9;margin-top:12px}
+  .glance{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:14px;background:var(--panel)}
+  .gstrip{display:flex;gap:8px;flex-wrap:wrap}
+  .gthumb{flex:1 1 0;min-width:58px;max-width:96px;cursor:pointer;text-align:center}
+  .gthumb canvas{width:100%;aspect-ratio:1;border-radius:6px;border:1px solid var(--line);background:#05080c;display:block}
+  .gthumb span{display:block;font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:5px;letter-spacing:.02em}
+  .gthumb:hover canvas{border-color:var(--accent)}
+  .gthumb.on canvas{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+  .gthumb.on span{color:var(--accent)}
   .ctxlong{margin-top:8px;color:var(--dim);font-size:12.5px;line-height:1.55}
   .ctxmore{display:inline-block;margin-top:8px;background:none;border:none;padding:2px 0;cursor:pointer;
     font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--accent)}
   .ctxmore:hover{text-decoration:underline;text-underline-offset:2px}
+  .keypoints{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:14px;background:var(--panel)}
+  .keypoints .kph{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:11px}
+  .keypoints ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .keypoints li{position:relative;padding-left:18px;font-size:13px;line-height:1.5;color:var(--text)}
+  .keypoints li::before{content:"";position:absolute;left:2px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
   .viewer input[type=range]::-webkit-slider-thumb{width:20px;height:20px;border-width:3px}
   .viewer input[type=range]::-moz-range-thumb{width:16px;height:16px;border-width:3px}
   .info{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:16px}
@@ -316,6 +335,8 @@
 
       <div class="eqn" id="eqn"></div>
 
+      <div class="keypoints" id="kpCard"><div class="kph" data-i18n="kpTitle">Merken &middot; das Wichtigste</div><ul id="kpList"></ul></div>
+
       <details class="grp adv" id="grpAnalysis"><summary data-i18n="grpAnalysis">Analyse</summary><div class="gbody">
         <div class="ah"><span data-i18n="anaTitle">Analyse</span> <span class="ahsub" id="curveCap"></span></div>
         <canvas id="curve" width="300" height="120"></canvas>
@@ -346,7 +367,10 @@
           <span class="bd k"><i></i><span data-i18n="darkWord">dunkel</span>:&nbsp;<b id="winfoDark"></b></span></div>
         <p class="wclin" id="winfoClin"></p>
         <a class="wlink" id="winfoLink" href="#" target="_blank" rel="noopener"></a>
+        <div class="wtry" id="winfoTry"></div>
+        <p class="wpit" id="winfoPit"></p>
       </div>
+      <div class="glance" id="glanceCard"><div class="kph" data-i18n="glanceTitle">Wichtungen im Vergleich</div><div class="gstrip" id="glanceStrip"></div></div>
       <div class="info adv"><h2 data-i18n="glossTitle">Glossar</h2><div id="gloss"></div></div>
     </div>
   </div>
@@ -388,7 +412,7 @@
         wMix:"gemischt",tCsf:"Liquor (CSF)",tGm:"Graue Substanz",tWm:"Weiße Substanz",tFat:"Fett / Skalp",tLes:"Läsion",
         quizTitle:"Quiz · Wichtung erkennen",quizExit:"Quiz beenden",qPrompt:"Welche Wichtung zeigt dieses Bild?",qNext:"Nächste Frage",
         qGood:"Richtig! ",qBad:"Leider falsch. Richtig: ",ernst:"Ernst ≈",
-        glossTitle:"Glossar · was die Parameter bedeuten",eqADC:"ADC-Karte: Helligkeit ∝ ADC",viewerTitle:"Viewer",wlReset:"Reset",sliceLbl:"Schicht",winLbl:"Fenster · Kontrast",levLbl:"Helligkeit",planeLbl:"Ebene",noiseLbl:"Rauschen",pngBtn:"PNG",shareBtn:"Link",probeHint:"Tipp ins Bild für Werte",lesTypeLbl:"Typ",tEdema:"Ödem (vasogen)",tInfarct:"Infarkt (akut)",tTumor:"Tumor",tMs:"MS-Herd",anaTitle:"Analyse",cnrLbl:"Kontrast",sweepTE:"Signal über TE",sweepB:"Signal über b",optTE:"max @ TE {x}",optB:"max @ b {x}",shareCopied:"Link kopiert",sigWord:"Signal",cmpBtn:"Vergleich",anatBtn:"Anatomie-Labels",uiSimple:"Einfach",uiPro:"Pro",grpDisplay:"Anzeige",grpTools:"Werkzeuge",grpAnalysis:"Analyse",fieldLblG:"Feldstärke",winfoHdr:"Bildtyp · Erklärung",brightWord:"hell",darkWord:"dunkel",moreWord:"mehr ▾",lessWord:"weniger ▴",learnMore:"Mehr dazu →",ctx_se2:"Kurzes TR/kurzes TE betont T1, langes TR/langes TE betont T2, langes TR/kurzes TE ergibt PD. Spin-Echo ist robust gegen Feldinhomogenitäten, aber langsamer als Gradientenecho.",ctx_ir2:"Der 180°-Vorpuls invertiert die Magnetisierung; nach der Zeit TI durchläuft jedes Gewebe seinen Nullpunkt. Trifft man ihn genau, gibt dieses Gewebe kein Signal – so unterdrückt FLAIR den Liquor und STIR das Fett.",ctx_gre2:"Statt 180°-Puls nutzt GRE Gradienten und einen kleinen Flipwinkel – schnell, aber empfindlich gegen Feldinhomogenitäten (T2*). Großer Flip + kurzes TR → T1, langes TE → T2*.",ctx_swi2:"SWI nutzt zusätzlich die Phaseninformation und ist extrem empfindlich für Blutabbau und Eisen. Kleine Blutungen erscheinen größer als sie sind (Blooming).",ctx_dwi2:"Der b-Wert misst, wie frei sich Wasser bewegt. Beim akuten Infarkt ist die Diffusion eingeschränkt → hell. Vorsicht: auch langes T2 kann hell erscheinen (T2-Durchscheinen).",ctx_adc2:"Die ADC-Karte rechnet das T2-Durchscheinen heraus. Echte Restriktion ist hier dunkel – DWI und ADC immer zusammen beurteilen.",
+        glossTitle:"Glossar · was die Parameter bedeuten",eqADC:"ADC-Karte: Helligkeit ∝ ADC",viewerTitle:"Viewer",wlReset:"Reset",sliceLbl:"Schicht",winLbl:"Fenster · Kontrast",levLbl:"Helligkeit",planeLbl:"Ebene",noiseLbl:"Rauschen",pngBtn:"PNG",shareBtn:"Link",probeHint:"Tipp ins Bild für Werte",lesTypeLbl:"Typ",tEdema:"Ödem (vasogen)",tInfarct:"Infarkt (akut)",tTumor:"Tumor",tMs:"MS-Herd",anaTitle:"Analyse",cnrLbl:"Kontrast",sweepTE:"Signal über TE",sweepB:"Signal über b",optTE:"max @ TE {x}",optB:"max @ b {x}",shareCopied:"Link kopiert",sigWord:"Signal",cmpBtn:"Vergleich",anatBtn:"Anatomie-Labels",uiSimple:"Einfach",uiPro:"Pro",grpDisplay:"Anzeige",grpTools:"Werkzeuge",grpAnalysis:"Analyse",fieldLblG:"Feldstärke",winfoHdr:"Bildtyp · Erklärung",brightWord:"hell",darkWord:"dunkel",moreWord:"mehr ▾",lessWord:"weniger ▴",learnMore:"Mehr dazu →",kpTitle:"Merken · das Wichtigste",tryLabel:"Probier das",glanceTitle:"Wichtungen im Vergleich",ctx_se2:"Kurzes TR/kurzes TE betont T1, langes TR/langes TE betont T2, langes TR/kurzes TE ergibt PD. Spin-Echo ist robust gegen Feldinhomogenitäten, aber langsamer als Gradientenecho.",ctx_ir2:"Der 180°-Vorpuls invertiert die Magnetisierung; nach der Zeit TI durchläuft jedes Gewebe seinen Nullpunkt. Trifft man ihn genau, gibt dieses Gewebe kein Signal – so unterdrückt FLAIR den Liquor und STIR das Fett.",ctx_gre2:"Statt 180°-Puls nutzt GRE Gradienten und einen kleinen Flipwinkel – schnell, aber empfindlich gegen Feldinhomogenitäten (T2*). Großer Flip + kurzes TR → T1, langes TE → T2*.",ctx_swi2:"SWI nutzt zusätzlich die Phaseninformation und ist extrem empfindlich für Blutabbau und Eisen. Kleine Blutungen erscheinen größer als sie sind (Blooming).",ctx_dwi2:"Der b-Wert misst, wie frei sich Wasser bewegt. Beim akuten Infarkt ist die Diffusion eingeschränkt → hell. Vorsicht: auch langes T2 kann hell erscheinen (T2-Durchscheinen).",ctx_adc2:"Die ADC-Karte rechnet das T2-Durchscheinen heraus. Echte Restriktion ist hier dunkel – DWI und ADC immer zusammen beurteilen.",
         ctx_se:"Spin-Echo (SE): Das Grundverfahren mit 90°- und 180°-Puls. TR steuert den T1-, TE den T2-Anteil — so wählst du T1-, T2- oder PD-Wichtung.",
         ctx_ir:"Inversion Recovery (IR): Ein vorgeschalteter 180°-Puls kippt die Magnetisierung, danach wartet man die Zeit TI. Liegt ein Gewebe im Nulldurchgang, wird sein Signal unterdrückt — daraus entstehen FLAIR (Liquor weg) und STIR (Fett weg).",
         ctx_gre:"Gradientenecho (GRE): Statt 180°-Puls ein kleiner Flipwinkel α, refokussiert per Gradient. Schnell, T2*-gewichtet und empfindlich für Suszeptibilität — Basis vieler 3D- und Angio-Sequenzen.",
@@ -409,7 +433,7 @@
         wMix:"mixed",tCsf:"CSF",tGm:"Gray matter",tWm:"White matter",tFat:"Fat / scalp",tLes:"Lesion",
         quizTitle:"Quiz · name the weighting",quizExit:"Exit quiz",qPrompt:"Which weighting is shown here?",qNext:"Next question",
         qGood:"Correct! ",qBad:"Not quite. Answer: ",ernst:"Ernst ≈",
-        glossTitle:"Glossary · what the parameters mean",eqADC:"ADC map: brightness ∝ ADC",viewerTitle:"Viewer",wlReset:"Reset",sliceLbl:"Slice",winLbl:"Window · contrast",levLbl:"Brightness",planeLbl:"Plane",noiseLbl:"Noise",pngBtn:"PNG",shareBtn:"Link",probeHint:"Tap the image for values",lesTypeLbl:"Type",tEdema:"Edema (vasogenic)",tInfarct:"Infarct (acute)",tTumor:"Tumor",tMs:"MS lesion",anaTitle:"Analysis",cnrLbl:"Contrast",sweepTE:"signal vs TE",sweepB:"signal vs b",optTE:"max @ TE {x}",optB:"max @ b {x}",shareCopied:"Link copied",sigWord:"signal",cmpBtn:"Compare",anatBtn:"Anatomy labels",uiSimple:"Simple",uiPro:"Pro",grpDisplay:"Display",grpTools:"Tools",grpAnalysis:"Analysis",fieldLblG:"Field strength",winfoHdr:"Image type · explanation",brightWord:"bright",darkWord:"dark",moreWord:"more ▾",lessWord:"less ▴",learnMore:"Learn more →",ctx_se2:"Short TR/short TE emphasises T1, long TR/long TE emphasises T2, long TR/short TE gives PD. Spin echo is robust against field inhomogeneity but slower than gradient echo.",ctx_ir2:"The 180° prep pulse inverts the magnetization; after time TI every tissue passes through its null. Hit it exactly and that tissue gives no signal – this is how FLAIR nulls CSF and STIR nulls fat.",ctx_gre2:"Instead of a 180° pulse, GRE uses gradients and a small flip angle – fast but sensitive to field inhomogeneity (T2*). Large flip + short TR → T1, long TE → T2*.",ctx_swi2:"SWI also uses the phase information and is extremely sensitive to blood products and iron. Small bleeds look larger than they are (blooming).",ctx_dwi2:"The b-value measures how freely water moves. In acute infarct diffusion is restricted → bright. Caution: long T2 can also look bright (T2 shine-through).",ctx_adc2:"The ADC map removes T2 shine-through. True restriction is dark here – always read DWI and ADC together.",
+        glossTitle:"Glossary · what the parameters mean",eqADC:"ADC map: brightness ∝ ADC",viewerTitle:"Viewer",wlReset:"Reset",sliceLbl:"Slice",winLbl:"Window · contrast",levLbl:"Brightness",planeLbl:"Plane",noiseLbl:"Noise",pngBtn:"PNG",shareBtn:"Link",probeHint:"Tap the image for values",lesTypeLbl:"Type",tEdema:"Edema (vasogenic)",tInfarct:"Infarct (acute)",tTumor:"Tumor",tMs:"MS lesion",anaTitle:"Analysis",cnrLbl:"Contrast",sweepTE:"signal vs TE",sweepB:"signal vs b",optTE:"max @ TE {x}",optB:"max @ b {x}",shareCopied:"Link copied",sigWord:"signal",cmpBtn:"Compare",anatBtn:"Anatomy labels",uiSimple:"Simple",uiPro:"Pro",grpDisplay:"Display",grpTools:"Tools",grpAnalysis:"Analysis",fieldLblG:"Field strength",winfoHdr:"Image type · explanation",brightWord:"bright",darkWord:"dark",moreWord:"more ▾",lessWord:"less ▴",learnMore:"Learn more →",kpTitle:"Key points · what matters",tryLabel:"Try this",glanceTitle:"Contrast at a glance",ctx_se2:"Short TR/short TE emphasises T1, long TR/long TE emphasises T2, long TR/short TE gives PD. Spin echo is robust against field inhomogeneity but slower than gradient echo.",ctx_ir2:"The 180° prep pulse inverts the magnetization; after time TI every tissue passes through its null. Hit it exactly and that tissue gives no signal – this is how FLAIR nulls CSF and STIR nulls fat.",ctx_gre2:"Instead of a 180° pulse, GRE uses gradients and a small flip angle – fast but sensitive to field inhomogeneity (T2*). Large flip + short TR → T1, long TE → T2*.",ctx_swi2:"SWI also uses the phase information and is extremely sensitive to blood products and iron. Small bleeds look larger than they are (blooming).",ctx_dwi2:"The b-value measures how freely water moves. In acute infarct diffusion is restricted → bright. Caution: long T2 can also look bright (T2 shine-through).",ctx_adc2:"The ADC map removes T2 shine-through. True restriction is dark here – always read DWI and ADC together.",
         ctx_se:"Spin echo (SE): The basic method with 90° and 180° pulses. TR sets the T1 contribution, TE the T2 one — that lets you pick T1-, T2- or PD-weighting.",
         ctx_ir:"Inversion recovery (IR): An extra 180° pulse flips the magnetization, then you wait the time TI. A tissue at its null point is suppressed — this is how FLAIR (no CSF) and STIR (no fat) are made.",
         ctx_gre:"Gradient echo (GRE): Instead of a 180° pulse a small flip angle α, refocused by a gradient. Fast, T2*-weighted and sensitive to susceptibility — the basis of many 3D and angio sequences.",
@@ -613,11 +637,12 @@
     flair:{mode:"ir",TR:9000,TE:120,nullK:"csf",tag:"FLAIR"},stir:{mode:"ir",TR:4000,TE:40,nullK:"fat",tag:"STIR"},
     t1gre:{mode:"gre",TR:200,TE:5,flip:70,tag:"T1-GRE"},t2star:{mode:"gre",TR:300,TE:25,flip:15,tag:"T2*"},
     swi:{mode:"swi",TR:300,TE:40,flip:15,tag:"SWI"},dwi:{mode:"dwi",b:1000,tag:"DWI"},adc:{mode:"dwi",b:1000,adc:true,tag:"ADC"}};
-  function compareParams(){const c=CMP[cmpPreset]||CMP.t2;const p={mode:c.mode,TR:c.TR||500,TE:c.TE||14,TI:c.TI||1930,flip:c.flip||30,b:c.b||0,adc:!!c.adc};
+  function presetParams(key){const c=CMP[key]||CMP.t2;const p={mode:c.mode,TR:c.TR||500,TE:c.TE||14,TI:c.TI||1930,flip:c.flip||30,b:c.b||0,adc:!!c.adc};
     if(c.nullK)p.TI=nullTI(T[c.nullK].T1,p.TR);return p;}
+  function compareParams(){return presetParams(cmpPreset);}
   const WINFO={de:{
     t1:{t:"T1-gewichtet",d:"Betont T1-Unterschiede – gut für Anatomie. Kontrastmittel macht Gewebe hier hell.",b:"Fett, weiße Substanz",k:"Liquor"},
-    t2:{t:"T2-gewichtet",d:"Betont T2-Unterschiede. Wasser und Ödem leuchten – viele Pathologien werden sichtbar.",b:"Liquor, Ödem",k:"weiße Substanz"},
+    t2:{t:"T2-gewichtet",d:"Betont T2-Unterschiede. Wasser und Ödem leuchten – viele Pathologien werden sichtbar.",b:"Liquor, Ödem",k:"weiße Substanz (dunkler als graue)"},
     pd:{t:"Protonendichte",d:"Kaum T1-/T2-Gewichtung; die Helligkeit folgt der Protonendichte. Eher flauer Kontrast.",b:"Gewebe mit hoher Protonendichte",k:"–"},
     mix:{t:"Gemischte Wichtung",d:"TR/TE liegen zwischen den reinen Wichtungen – der Kontrast ist gemischt. Stelle TR/TE deutlicher für T1, T2 oder PD.",b:"–",k:"–"},
     flair:{t:"FLAIR",d:"Inversion mit langem TI – Liquor wird unterdrückt. Periventrikuläre Läsionen werden so sehr auffällig.",b:"Läsionen, Ödem",k:"Liquor (unterdrückt)"},
@@ -630,7 +655,7 @@
     adc:{t:"ADC-Karte",d:"Quantitative Diffusionskarte ohne T2-Durchscheinen. Echte Restriktion ist hier dunkel (Gegenteil zu DWI).",b:"Liquor",k:"akuter Infarkt"}},
    en:{
     t1:{t:"T1-weighted",d:"Emphasises T1 differences – great for anatomy. Contrast agent makes tissue bright here.",b:"fat, white matter",k:"CSF"},
-    t2:{t:"T2-weighted",d:"Emphasises T2 differences. Water and oedema glow – many pathologies become visible.",b:"CSF, oedema",k:"white matter"},
+    t2:{t:"T2-weighted",d:"Emphasises T2 differences. Water and oedema glow – many pathologies become visible.",b:"CSF, oedema",k:"white matter (darker than grey)"},
     pd:{t:"Proton density",d:"Little T1/T2 weighting; brightness follows proton density. Rather flat contrast.",b:"high proton-density tissue",k:"–"},
     mix:{t:"Mixed weighting",d:"TR/TE sit between the pure weightings – contrast is mixed. Set TR/TE more clearly for T1, T2 or PD.",b:"–",k:"–"},
     flair:{t:"FLAIR",d:"Inversion with long TI – CSF is suppressed, making periventricular lesions stand out.",b:"lesions, oedema",k:"CSF (suppressed)"},
@@ -653,7 +678,101 @@
   function updateWInfo(c){const k=winfoKey(c.w),G=(WINFO[lang]||WINFO.en),W=G[k]||G.mix,t=I[lang];
     $("winfoTitle").textContent=W.t;$("winfoDesc").textContent=W.d;$("winfoBright").textContent=W.b;$("winfoDark").textContent=W.k;
     $("winfoClin").textContent=(WCLIN[lang]||WCLIN.en)[k]||"";
-    const a=$("winfoLink");a.href=WURL[k]||WURL.mix;a.textContent=t.learnMore;}
+    const a=$("winfoLink");a.href=WURL[k]||WURL.mix;a.textContent=t.learnMore;
+    const tw=$("winfoTry");tw.innerHTML="";const chips=CHIPS[k]||[];
+    if(chips.length){const lb=document.createElement("span");lb.className="trylab";lb.textContent=t.tryLabel+":";tw.appendChild(lb);}
+    for(const ch of chips){const bt=document.createElement("button");bt.type="button";bt.className="chip";bt.textContent=ch[lang]||ch.en;
+      let on=false;if(ch.a.indexOf("cmp:")===0)on=compareOn&&cmpPreset===ch.a.slice(4);else if(ch.a==="lesion")on=lesion;else if(ch.a==="mbleed")on=microbleed;
+      if(on)bt.classList.add("on");bt.addEventListener("click",()=>doChip(ch.a));tw.appendChild(bt);}
+    $("winfoPit").textContent=(WPIT[lang]||WPIT.en)[k]||"";}
+  const CHIPS={
+    t1:[{a:"cmp:t2",de:"vs T2",en:"vs T2"},{a:"lesion",de:"+ Läsion",en:"+ lesion"}],
+    t2:[{a:"cmp:flair",de:"vs FLAIR",en:"vs FLAIR"},{a:"lesion",de:"+ Läsion",en:"+ lesion"}],
+    pd:[{a:"go:t1",de:"→ T1",en:"→ T1"},{a:"go:t2",de:"→ T2",en:"→ T2"}],
+    mix:[{a:"go:t1",de:"→ T1",en:"→ T1"},{a:"go:t2",de:"→ T2",en:"→ T2"}],
+    flair:[{a:"cmp:t2",de:"vs T2",en:"vs T2"},{a:"lesion",de:"+ Läsion",en:"+ lesion"}],
+    stir:[{a:"cmp:t2",de:"vs T2",en:"vs T2"},{a:"lesion",de:"+ Läsion",en:"+ lesion"}],
+    ir:[{a:"go:flair",de:"→ FLAIR",en:"→ FLAIR"},{a:"go:stir",de:"→ STIR",en:"→ STIR"}],
+    t1gre:[{a:"cmp:t1",de:"vs SE-T1",en:"vs SE T1"},{a:"go:t2star",de:"→ T2*",en:"→ T2*"}],
+    t2star:[{a:"go:swi",de:"→ SWI",en:"→ SWI"},{a:"mbleed",de:"+ Mikroblutung",en:"+ microbleed"}],
+    swi:[{a:"mbleed",de:"+ Mikroblutung",en:"+ microbleed"},{a:"go:t2star",de:"→ T2*",en:"→ T2*"}],
+    dwi:[{a:"cmp:adc",de:"DWI vs ADC",en:"DWI vs ADC"},{a:"lesion",de:"+ Infarkt",en:"+ infarct"}],
+    adc:[{a:"view:dwi",de:"→ DWI",en:"→ DWI"},{a:"cmp:dwi",de:"ADC vs DWI",en:"ADC vs DWI"}]};
+  const WPIT={de:{
+    t1:"Fallstrick: subakutes Blut und Melanin sind auch ohne Kontrastmittel hell.",
+    t2:"Fallstrick: fast alles Pathologische ist hell – wenig spezifisch.",
+    pd:"Fallstrick: geringer Kontrast – Läsionen leicht zu übersehen.",mix:"",
+    flair:"Fallstrick: Liquorfluss-Artefakte; Blut/Protein wird nicht unterdrückt.",
+    stir:"Fallstrick: niedriges SNR; nicht nach Gadolinium verwenden.",ir:"",
+    t1gre:"Fallstrick: anfällig für Suszeptibilitätsartefakte.",
+    t2star:"Fallstrick: Verkalkung und Blut sehen beide dunkel aus – schwer zu trennen.",
+    swi:"Fallstrick: Blooming überschätzt die Größe; Phase je nach Hersteller verschieden.",
+    dwi:"Fallstrick: T2-Durchscheinen – hell ohne echte Restriktion. Immer ADC prüfen.",
+    adc:"Fallstrick: nach etwa 1–2 Wochen normalisiert sich der ADC (Pseudonormalisierung) – Infarkt kann unauffällig wirken."},
+   en:{
+    t1:"Pitfall: subacute blood and melanin are bright even without contrast.",
+    t2:"Pitfall: almost all pathology is bright – not very specific.",
+    pd:"Pitfall: low contrast – lesions are easy to miss.",mix:"",
+    flair:"Pitfall: CSF-flow artefacts; blood/protein is not suppressed.",
+    stir:"Pitfall: low SNR; don't use after gadolinium.",ir:"",
+    t1gre:"Pitfall: prone to susceptibility artefacts.",
+    t2star:"Pitfall: calcium and blood both look dark – hard to tell apart.",
+    swi:"Pitfall: blooming overstates size; phase differs by vendor.",
+    dwi:"Pitfall: T2 shine-through – bright without real restriction. Always check ADC.",
+    adc:"Pitfall: ADC pseudo-normalises after ~1–2 weeks – the infarct can look normal."}};
+  function applyPresetKey(key){const c=CMP[key];if(!c)return;setMode(c.mode);
+    if(c.TR)trEl.value=c.TR;if(c.TE!=null)teEl.value=c.TE;if(c.flip)flipEl.value=c.flip;if(c.b!=null)bEl.value=c.b;
+    if(c.nullK)tiEl.value=nullTI(T[c.nullK].T1,+trEl.value);
+    dwiView=c.adc?"adc":"dwi";if(c.mode==="dwi"){$("view-dwi").setAttribute("aria-pressed",!c.adc);$("view-adc").setAttribute("aria-pressed",!!c.adc);}
+    update();}
+  function doChip(a){
+    if(a.indexOf("cmp:")===0){const pk=a.slice(4);if(compareOn&&cmpPreset===pk){compareOn=false;}else{compareOn=true;cmpPreset=pk;}
+      $("cmpTog").setAttribute("aria-pressed",compareOn);$("cmpSel").disabled=!compareOn;$("cmpSel").value=cmpPreset;update();return;}
+    if(a==="lesion"){setLesion(!lesion);return;}
+    if(a==="mbleed"){microbleed=!microbleed;mbTog.classList.toggle("on",microbleed);mbTog.setAttribute("aria-checked",microbleed);update();return;}
+    if(a==="view:dwi"){dwiView="dwi";$("view-dwi").setAttribute("aria-pressed",true);$("view-adc").setAttribute("aria-pressed",false);update();return;}
+    if(a==="view:adc"){dwiView="adc";$("view-dwi").setAttribute("aria-pressed",false);$("view-adc").setAttribute("aria-pressed",true);update();return;}
+    if(a.indexOf("go:")===0){applyPresetKey(a.slice(3));return;}}
+  const GLANCE=[["t1","T1"],["t2","T2"],["flair","FLAIR"],["dwi","DWI"],["adc","ADC"]];
+  const gThumbs={};
+  function buildGlance(){const strip=$("glanceStrip");strip.innerHTML="";
+    for(const [k,lab] of GLANCE){const w=document.createElement("div");w.className="gthumb";
+      const c=document.createElement("canvas");c.width=W;c.height=H;const s=document.createElement("span");s.textContent=lab;
+      w.appendChild(c);w.appendChild(s);w.addEventListener("click",()=>applyPresetKey(k));strip.appendChild(w);gThumbs[k]={wrap:w,cv:c};}}
+  let glanceSig="";
+  function renderGlance(){for(const [k] of GLANCE){const r=fieldBuf(presetParams(k)),cnv=gThumbs[k].cv,tctx=cnv.getContext("2d"),im=tctx.createImageData(W,H),d=im.data;
+    for(let i=0;i<NP;i++){let s=r.buf[i]/r.nrm;s=s<0?0:s>1?1:s;const v=Math.pow(s,0.85)*255|0,q=i*4;d[q]=d[q+1]=d[q+2]=v;d[q+3]=255;}tctx.putImageData(im,0,0);}}
+  function highlightGlance(){const ak=winfoKey(classify(curParams()).w);for(const [k] of GLANCE)gThumbs[k].wrap.classList.toggle("on",k===ak);}
+  function maybeGlance(){const sig=plane+":"+sliceIdx+":"+field+":"+(lesion?1:0)+":"+(microbleed?1:0);if(sig!==glanceSig){glanceSig=sig;renderGlance();}highlightGlance();}
+  const KP={de:{
+    t1:["Fett und subakutes Blut hell, Liquor dunkel.","Beste Sequenz für Anatomie.","Gadolinium verkürzt T1 → Anreicherung wird hell."],
+    t2:["Wasser, Liquor und Ödem sind hell.","Die meisten Pathologien sind hell – der häufigste auffällige Befund.","Langes TR und langes TE."],
+    pd:["Hohe Signalausbeute, aber flauer Kontrast.","Kompromiss aus TR und TE.","Nützlich für Knorpel und Menisken."],
+    mix:["Der Kontrast ist gemischt.","Stelle TR/TE deutlicher ein, um T1, T2 oder PD zu erhalten."],
+    flair:["T2 mit unterdrücktem Liquor – periventrikuläre Läsionen werden auffällig.","Wichtig bei MS, Gliose und Subarachnoidalblutung.","TI am Hirn etwa 2000–2500 ms."],
+    stir:["Fett wird unterdrückt – Ödem wird auffällig.","Nicht nach Gadolinium verwenden (löscht auch Anreicherung).","Häufig an Wirbelsäule, Gelenken und Orbita."],
+    ir:["TI bestimmt, welches Gewebe ausgelöscht wird.","Liquor → FLAIR, Fett → STIR."],
+    t1gre:["Schnell und 3D-fähig, kleiner Flipwinkel, kein 180°-Puls.","Empfindlich für Suszeptibilität (T2*).","Basis vieler kontrastverstärkter Aufnahmen."],
+    t2star:["Blut, Eisen und Kalk erscheinen dunkel (Blooming).","Suszeptibilitätsartefakte nahe Luft und Knochen.","Empfindlicher als normales T2 für Blutung."],
+    swi:["Empfindlichste Sequenz für Mikroblutungen und Kavernome.","Zeigt auch Venen und Verkalkungen.","Nutzt Betrag und Phase des Signals."],
+    dwi:["Restringierte Diffusion (akuter Schlaganfall, Abszess, dichter Tumor) bleibt bei hohem b-Wert hell.","Immer mit der ADC-Karte zusammen lesen: echte Restriktion ist auf DWI hell UND auf ADC dunkel.","Vorsicht „T2-Durchscheinen“: hell nur wegen langem T2, keine echte Restriktion – ADC prüfen.","Höheres b → stärkere Diffusionswichtung, aber weniger SNR (Hirn meist b=1000).","Frühestes sicheres Zeichen des ischämischen Schlaganfalls (Minuten)."],
+    adc:["Quantitative Karte – rechnet das T2-Durchscheinen heraus.","Echte Restriktion ist auf ADC dunkel (auf DWI hell).","Nach etwa 1–2 Wochen normalisiert sich der ADC scheinbar (Pseudonormalisierung)."]},
+   en:{
+    t1:["Fat and subacute blood bright, CSF dark.","Best sequence for anatomy.","Gadolinium shortens T1 → enhancement turns bright."],
+    t2:["Water, CSF and oedema are bright.","Most pathology is bright – the commonest abnormal finding.","Long TR and long TE."],
+    pd:["High signal yield but flat contrast.","A compromise between TR and TE.","Useful for cartilage and menisci."],
+    mix:["The contrast is mixed.","Set TR/TE more clearly to get T1, T2 or PD."],
+    flair:["T2 with CSF nulled – periventricular lesions stand out.","Key for MS, gliosis and subarachnoid haemorrhage.","Brain TI is about 2000–2500 ms."],
+    stir:["Fat is nulled – oedema becomes conspicuous.","Don't use after gadolinium (it nulls enhancement too).","Common in spine, joints and orbits."],
+    ir:["TI sets which tissue is nulled.","CSF → FLAIR, fat → STIR."],
+    t1gre:["Fast and 3D-capable, small flip angle, no 180° pulse.","Sensitive to susceptibility (T2*).","Basis of many contrast-enhanced scans."],
+    t2star:["Blood, iron and calcium appear dark (blooming).","Susceptibility artefact near air and bone.","More sensitive than plain T2 for haemorrhage."],
+    swi:["Most sensitive sequence for microbleeds and cavernomas.","Also shows veins and calcification.","Uses both magnitude and phase."],
+    dwi:["Restricted diffusion (acute stroke, abscess, dense tumour) stays bright at high b-value.","Always read with the ADC map: true restriction is bright on DWI AND dark on ADC.","Beware “T2 shine-through”: bright only from long T2, not real restriction – check ADC.","Higher b → stronger diffusion weighting but less SNR (brain usually b=1000).","Earliest reliable sign of ischaemic stroke (minutes)."],
+    adc:["Quantitative map – removes T2 shine-through.","True restriction is dark on ADC (bright on DWI).","ADC pseudo-normalises after about 1–2 weeks (pseudonormalisation)."]}};
+  function updateKP(c){const arr=(KP[lang]||KP.en)[winfoKey(c.w)]||[];const ul=$("kpList");ul.innerHTML="";
+    for(const s of arr){const li=document.createElement("li");li.textContent=s;ul.appendChild(li);}
+    $("kpCard").hidden=(arr.length===0);}
 
   function update(){
     const p=curParams(),t=I[lang];
@@ -693,7 +812,7 @@
       else $("probeRead").innerHTML='<span class="tis">'+t[T[dk].key]+'</span> · '+t.sigWord+' <b>'+(lastBuf[i]/lastNrm).toFixed(2)+'</b>';}
     if(compareOn){$("cmpL").hidden=false;$("cmpR").hidden=false;$("cmpL").textContent=(c.w==="MIX"?t.wMix:c.w);$("cmpR").textContent=(CMP[cmpPreset]||CMP.t2).tag;}
     else{$("cmpL").hidden=true;$("cmpR").hidden=true;}
-    renderAnatomy();updateWInfo(c);
+    renderAnatomy();updateWInfo(c);updateKP(c);maybeGlance();
     if(!quizOn)allPresets.forEach(b=>b.classList.remove("active"));
   }
 
@@ -850,6 +969,9 @@
   const sliceEl=$("slice"),winEl=$("win"),levEl=$("lev");
   sliceEl.max=SLICES.length-1;sliceEl.value=sliceIdx;
   sliceEl.addEventListener("input",()=>{setSlice(+sliceEl.value);update();});
+  function stepSlice(d){const ni=Math.max(0,Math.min(SLICES.length-1,sliceIdx+d));if(ni!==sliceIdx){sliceIdx=ni;sliceEl.value=ni;setSlice(ni);update();}}
+  const imgrowEl=document.querySelector(".imgrow");
+  if(imgrowEl)imgrowEl.addEventListener("wheel",e=>{e.preventDefault();stepSlice(e.deltaY>0?1:-1);},{passive:false});
   winEl.addEventListener("input",()=>{winW=+winEl.value;update();});
   levEl.addEventListener("input",()=>{winL=+levEl.value;update();});
   $("wlreset").addEventListener("click",()=>{winW=1.0;winL=0.5;winEl.value=1.0;levEl.value=0.5;update();});
@@ -860,6 +982,7 @@
   $("cnrB").addEventListener("change",e=>{cnrB=e.target.value;update();});
   $("cnrOpt").addEventListener("click",()=>{const o=$("cnrOpt"),x=+o.dataset.x;if(!x)return;if(o.dataset.dwi==="1")bEl.value=x;else teEl.value=Math.max(1,Math.min(250,x));update();});
   buildCmpSel();
+  buildGlance();
   const wrapEl=document.querySelector(".wrap");
   function setUI(pro){wrapEl.classList.toggle("pro",pro);$("ui-pro").setAttribute("aria-pressed",pro);$("ui-simple").setAttribute("aria-pressed",!pro);}
   $("ui-simple").addEventListener("click",()=>setUI(false));
