@@ -794,7 +794,14 @@
     for(const s of arr){const li=document.createElement("li");li.textContent=s;ul.appendChild(li);}
     $("kpCard").hidden=(arr.length===0);}
 
+  var _rafPending=false;
   function update(){
+    // Mehrere Eingaben pro Bildschirm-Frame in einen einzigen Render zusammenfassen
+    if(_rafPending)return;
+    _rafPending=true;
+    requestAnimationFrame(function(){_rafPending=false;_updateNow();});
+  }
+  function _updateNow(){
     const p=curParams(),t=I[lang];
     $("tr-val").textContent=p.TR;$("te-val").textContent=p.TE;$("ti-val").textContent=p.TI;$("flip-val").textContent=p.flip;$("b-val").textContent=p.b;
     // overlay + ctx column
@@ -1024,7 +1031,7 @@
   $("ctxMoreBtn").addEventListener("click",()=>{const l=$("ctxLong");l.hidden=!l.hidden;$("ctxMoreBtn").textContent=l.hidden?I[lang].moreWord:I[lang].lessWord;});
   cv.addEventListener("click",e=>{const r=cv.getBoundingClientRect();const px=Math.floor((e.clientX-r.left)/r.width*W),py=Math.floor((e.clientY-r.top)/r.height*H);
     if(px>=0&&px<W&&py>=0&&py<H){probe={px:px,py:py};update();}});
-  $("pngBtn").addEventListener("click",()=>{const tmp=document.createElement("canvas"),SZ=512;tmp.width=tmp.height=SZ;const tc=tmp.getContext("2d");tc.imageSmoothingEnabled=false;tc.drawImage(cv,0,0,SZ,SZ);
+  $("pngBtn").addEventListener("click",()=>{if(_rafPending){_rafPending=false;_updateNow();}const tmp=document.createElement("canvas"),SZ=512;tmp.width=tmp.height=SZ;const tc=tmp.getContext("2d");tc.imageSmoothingEnabled=false;tc.drawImage(cv,0,0,SZ,SZ);
     const a=document.createElement("a");a.download="mri_"+plane+"_"+DATA.views[plane].lab+DATA.views[plane].idx[sliceIdx]+".png";a.href=tmp.toDataURL("image/png");a.click();});
   function encodeState(){return location.origin+location.pathname+"#"+[mode,trEl.value,teEl.value,tiEl.value,flipEl.value,bEl.value,field,plane,sliceIdx,lesion?1:0,lesType,microbleed?1:0,dwiView,winW,winL,noiseLv,cnrA,cnrB,compareOn?1:0,cmpPreset,anatOn?1:0,wrapEl.classList.contains("pro")?1:0].join(",");}
   $("shareBtn").addEventListener("click",()=>{const url=encodeState();location.hash=url.split("#")[1];const el=$("shareBtn"),t=I[lang];
