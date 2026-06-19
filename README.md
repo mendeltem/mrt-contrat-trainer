@@ -2,6 +2,9 @@
 
 **An interactive, offline browser tool for learning MRI.** See how acquisition parameters (TR, TE, TI, flip angle, b-value) and sequences (SE, IR, GRE, DWI, SWI) shape image contrast on real brain anatomy — every pixel is computed live from the signal equations as you drag the sliders. No install, no build step, no data leaves your machine. Bilingual (English / Deutsch).
 
+**▶ Live demo:** https://mendeltem.github.io/mrt-contrat-trainer/mri-kontrast-simulator.html
+**Repository:** https://github.com/mendeltem/mrt-contrat-trainer
+
 > ⚠️ **Educational tool, not a medical device.** Images are computed from *simplified* signal equations on a standard brain template — not from a real scan. Tissue values are typical references and vary by scanner and vendor. Lesions and microbleeds are synthetic. Do not use for diagnosis.
 
 ![MR Contrast Lab](w_simple.png)
