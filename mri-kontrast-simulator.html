@@ -1009,7 +1009,7 @@
   sliceEl.addEventListener("input",()=>{setSlice(+sliceEl.value);update();});
   function stepSlice(d){const ni=Math.max(0,Math.min(SLICES.length-1,sliceIdx+d));if(ni!==sliceIdx){sliceIdx=ni;sliceEl.value=ni;setSlice(ni);update();}}
   const imgrowEl=document.querySelector(".imgrow");
-  if(imgrowEl)imgrowEl.addEventListener("wheel",e=>{e.preventDefault();stepSlice(e.deltaY>0?1:-1);},{passive:false});
+  if(imgrowEl)imgrowEl.addEventListener("wheel",e=>{e.preventDefault();stepSlice(e.deltaY>0?-1:1);},{passive:false});
   winEl.addEventListener("input",()=>{winW=+winEl.value;update();});
   levEl.addEventListener("input",()=>{winL=+levEl.value;update();});
   $("wlreset").addEventListener("click",()=>{winW=1.0;winL=0.5;winEl.value=1.0;levEl.value=0.5;update();});
