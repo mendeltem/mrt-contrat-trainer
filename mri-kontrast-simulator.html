@@ -33,6 +33,7 @@
   .seg button[aria-pressed="true"]{background:var(--accent);color:#04181a}
   .seg.quiz button[aria-pressed="true"]{background:var(--amber);color:#1a1206}
   .seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .modepill{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:8px;padding:8px 13px;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.04em}
   .grid{display:grid;grid-template-columns:1fr;gap:16px;align-items:start}
   @media(min-width:700px){.grid{grid-template-columns:280px 1fr}}
   @media(min-width:1080px){.grid{grid-template-columns:minmax(380px,1.25fr) minmax(300px,1fr) minmax(300px,0.95fr)}}
@@ -225,6 +226,13 @@
   .info{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:16px}
   .info h2{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
     padding:11px 13px;background:var(--panel);border-bottom:1px solid var(--line)}
+  details.glosscard>summary{list-style:none;cursor:pointer;outline:none}
+  details.glosscard>summary::-webkit-details-marker{display:none}
+  details.glosscard>summary h2{display:flex;align-items:center;gap:8px;margin:0}
+  details.glosscard:not([open])>summary h2{border-bottom:none}
+  details.glosscard>summary h2::after{content:"\25b6";margin-left:auto;font-size:9px;color:var(--dim);transition:transform .15s}
+  details.glosscard[open]>summary h2::after{transform:rotate(90deg)}
+  details.glosscard>summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
   details.g{border-bottom:1px solid var(--line-soft)}
   details.g:last-child{border-bottom:none}
   details.g>summary{list-style:none;cursor:pointer;padding:11px 13px;display:block;outline:none}
@@ -248,14 +256,14 @@
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="wrap pro">
   <header>
     <div class="brand">
       <div class="title">MR&middot;<b>CONTRAST</b> <span data-i18n="seq">Lab</span></div>
       <div class="sub"><span data-i18n="space">MNI152 Standardraum</span> &middot; <span id="field-lbl">1.5&nbsp;T</span> &middot; <span data-i18n="slice">axial</span></div>
     </div>
     <div class="htools">
-      <div class="seg" role="group" aria-label="Detail"><button id="ui-simple" aria-pressed="true" data-i18n="uiSimple">Einfach</button><button id="ui-pro" aria-pressed="false" data-i18n="uiPro">Pro</button></div>
+      <span class="modepill" data-i18n="uiExplore">Explore</span>
       <div class="seg quiz" role="group" aria-label="Quiz"><button id="quizBtn" aria-pressed="false">Quiz</button></div>
       <div class="seg" role="group" aria-label="Language"><button id="lang-de" aria-pressed="true">DE</button><button id="lang-en" aria-pressed="false">EN</button></div>
     </div>
@@ -273,6 +281,7 @@
           <div class="orient" id="orientLayer" hidden><span class="o-t"></span><span class="o-b"></span><span class="o-l"></span><span class="o-r"></span></div></div>
         <div class="slicebar"><input id="slice" type="range" min="0" max="6" step="1" value="3" aria-label="Slice"><b id="slice-z" class="slz">z=96</b></div>
       </div>
+      <div class="probe" id="probeRead"></div>
       <div class="ctxhelp" id="ctxHelp"><div id="ctxShort"></div><div id="ctxLong" class="ctxlong" hidden></div><button class="ctxmore" id="ctxMoreBtn" type="button"></button></div>
       <div class="viewer">
         <div class="vctl fieldrow"><span class="vlab" data-i18n="fieldLblG">Feldst&auml;rke</span>
@@ -288,7 +297,6 @@
           <button class="vreset" id="anatTog" aria-pressed="false" data-i18n="anatBtn">Anatomie-Labels</button>
           <div class="vbtns"><button class="vreset" id="pngBtn" data-i18n="pngBtn">PNG</button><button class="vreset" id="shareBtn" data-i18n="shareBtn">Link</button></div>
         </div></details>
-        <div class="probe" id="probeRead"></div>
       </div>
     </section>
 
@@ -381,7 +389,7 @@
         <p class="wpit" id="winfoPit"></p>
       </div>
       <div class="glance" id="glanceCard"><div class="kph" data-i18n="glanceTitle">Wichtungen im Vergleich</div><div class="gstrip" id="glanceStrip"></div></div>
-      <div class="info adv"><h2 data-i18n="glossTitle">Glossar</h2><div id="gloss"></div></div>
+      <details class="info adv glosscard"><summary><h2 data-i18n="glossTitle">Glossar</h2></summary><div id="gloss"></div></details>
     </div>
   </div>
   <p class="foot" data-i18n="foot"></p>
@@ -421,7 +429,7 @@
         wMix:"gemischt",tCsf:"Liquor (CSF)",tGm:"Graue Substanz",tWm:"Weiße Substanz",tFat:"Fett / Skalp",tLes:"Läsion",
         quizTitle:"Quiz · Wichtung erkennen",quizExit:"Quiz beenden",qPrompt:"Welche Wichtung zeigt dieses Bild?",qNext:"Nächste Frage",
         qGood:"Richtig! ",qBad:"Leider falsch. Richtig: ",ernst:"Ernst ≈",
-        glossTitle:"Glossar · was die Parameter bedeuten",eqADC:"ADC-Karte: Helligkeit ∝ ADC",viewerTitle:"Viewer",wlReset:"Reset",sliceLbl:"Schicht",winLbl:"Fenster · Kontrast",levLbl:"Helligkeit",planeLbl:"Ebene",noiseLbl:"Rauschen",pngBtn:"PNG",shareBtn:"Link",probeHint:"Tipp ins Bild für Werte",lesTypeLbl:"Typ",tEdema:"Ödem (vasogen)",tInfarct:"Infarkt (akut)",tLacune:"Lakune (chronisch)",tWmh:"WMH / Gliose",tTumor:"Tumor",tMs:"MS-Herd",tAbscess:"Abszess",tHemAcute:"Blutung (akut)",tHemSub:"Blutung (subakut)",anaTitle:"Analyse",cnrLbl:"Kontrast",sweepTE:"Signal über TE",sweepB:"Signal über b",optTE:"max @ TE {x}",optB:"max @ b {x}",shareCopied:"Link kopiert",sigWord:"Signal",cmpBtn:"Vergleich",anatBtn:"Anatomie-Labels",uiSimple:"Einfach",uiPro:"Pro",grpDisplay:"Anzeige",grpTools:"Werkzeuge",grpAnalysis:"Analyse",fieldLblG:"Feldstärke",winfoHdr:"Bildtyp · Erklärung",brightWord:"hell",darkWord:"dunkel",moreWord:"mehr ▾",lessWord:"weniger ▴",learnMore:"Mehr dazu →",kpTitle:"Merken · das Wichtigste",tryLabel:"Probier das",glanceTitle:"Wichtungen im Vergleich",ctx_se2:"Kurzes TR/kurzes TE betont T1, langes TR/langes TE betont T2, langes TR/kurzes TE ergibt PD. Spin-Echo ist robust gegen Feldinhomogenitäten, aber langsamer als Gradientenecho.",ctx_tse:"Turbo-Spin-Echo (TSE): Ein 90°-Puls, dann ein ganzer Echozug aus 180°-Pulsen – viele k-Raum-Zeilen pro TR, daher viel schneller. Kontrast wie SE (effektives TE), aber Fett bleibt auf T2 hell.",ctx_tse2:"Der Kontrast richtet sich nach dem effektiven TE (zentrale k-Raum-Zeile). Durch die eng aufeinanderfolgenden 180°-Pulse ist die J-Kopplung des Fetts gestört – Fett erscheint auf T2-TSE heller als auf klassischem SE (daher oft mit Fettunterdrückung kombiniert). Lange Echozüge (hoher Turbofaktor/ETL) verursachen Unschärfe; durch die vielen Refokussierungspulse ist TSE zudem unempfindlicher gegen Suszeptibilität (Blutungen schlechter sichtbar) und hat eine höhere SAR.",ctx_ir2:"Der 180°-Vorpuls invertiert die Magnetisierung; nach der Zeit TI durchläuft jedes Gewebe seinen Nullpunkt. Trifft man ihn genau, gibt dieses Gewebe kein Signal – so unterdrückt FLAIR den Liquor und STIR das Fett.",ctx_gre2:"Statt 180°-Puls nutzt GRE Gradienten und einen kleinen Flipwinkel – schnell, aber empfindlich gegen Feldinhomogenitäten (T2*). Großer Flip + kurzes TR → T1, langes TE → T2*.",ctx_swi2:"SWI nutzt zusätzlich die Phaseninformation und ist extrem empfindlich für Blutabbau und Eisen. Kleine Blutungen erscheinen größer als sie sind (Blooming).",ctx_dwi2:"Der b-Wert misst, wie frei sich Wasser bewegt. Beim akuten Infarkt ist die Diffusion eingeschränkt → hell. Vorsicht: auch langes T2 kann hell erscheinen (T2-Durchscheinen).",ctx_adc2:"Die ADC-Karte rechnet das T2-Durchscheinen heraus. Echte Restriktion ist hier dunkel – DWI und ADC immer zusammen beurteilen.",
+        glossTitle:"Glossar · was die Parameter bedeuten",eqADC:"ADC-Karte: Helligkeit ∝ ADC",viewerTitle:"Viewer",wlReset:"Reset",sliceLbl:"Schicht",winLbl:"Fenster · Kontrast",levLbl:"Helligkeit",planeLbl:"Ebene",noiseLbl:"Rauschen",pngBtn:"PNG",shareBtn:"Link",probeHint:"Tipp ins Bild für Werte",lesTypeLbl:"Typ",tEdema:"Ödem (vasogen)",tInfarct:"Infarkt (akut)",tLacune:"Lakune (chronisch)",tWmh:"WMH / Gliose",tTumor:"Tumor",tMs:"MS-Herd",tAbscess:"Abszess",tHemAcute:"Blutung (akut)",tHemSub:"Blutung (subakut)",anaTitle:"Analyse",cnrLbl:"Kontrast",sweepTE:"Signal über TE",sweepB:"Signal über b",optTE:"max @ TE {x}",optB:"max @ b {x}",shareCopied:"Link kopiert",sigWord:"Signal",cmpBtn:"Vergleich",anatBtn:"Anatomie-Labels",uiSimple:"Einfach",uiPro:"Pro",uiExplore:"Explore",grpDisplay:"Anzeige",grpTools:"Werkzeuge",grpAnalysis:"Analyse",fieldLblG:"Feldstärke",winfoHdr:"Bildtyp · Erklärung",brightWord:"hell",darkWord:"dunkel",moreWord:"mehr ▾",lessWord:"weniger ▴",learnMore:"Mehr dazu →",kpTitle:"Merken · das Wichtigste",tryLabel:"Probier das",glanceTitle:"Wichtungen im Vergleich",ctx_se2:"Kurzes TR/kurzes TE betont T1, langes TR/langes TE betont T2, langes TR/kurzes TE ergibt PD. Spin-Echo ist robust gegen Feldinhomogenitäten, aber langsamer als Gradientenecho.",ctx_tse:"Turbo-Spin-Echo (TSE): Ein 90°-Puls, dann ein ganzer Echozug aus 180°-Pulsen – viele k-Raum-Zeilen pro TR, daher viel schneller. Kontrast wie SE (effektives TE), aber Fett bleibt auf T2 hell.",ctx_tse2:"Der Kontrast richtet sich nach dem effektiven TE (zentrale k-Raum-Zeile). Durch die eng aufeinanderfolgenden 180°-Pulse ist die J-Kopplung des Fetts gestört – Fett erscheint auf T2-TSE heller als auf klassischem SE (daher oft mit Fettunterdrückung kombiniert). Lange Echozüge (hoher Turbofaktor/ETL) verursachen Unschärfe; durch die vielen Refokussierungspulse ist TSE zudem unempfindlicher gegen Suszeptibilität (Blutungen schlechter sichtbar) und hat eine höhere SAR.",ctx_ir2:"Der 180°-Vorpuls invertiert die Magnetisierung; nach der Zeit TI durchläuft jedes Gewebe seinen Nullpunkt. Trifft man ihn genau, gibt dieses Gewebe kein Signal – so unterdrückt FLAIR den Liquor und STIR das Fett.",ctx_gre2:"Statt 180°-Puls nutzt GRE Gradienten und einen kleinen Flipwinkel – schnell, aber empfindlich gegen Feldinhomogenitäten (T2*). Großer Flip + kurzes TR → T1, langes TE → T2*.",ctx_swi2:"SWI nutzt zusätzlich die Phaseninformation und ist extrem empfindlich für Blutabbau und Eisen. Kleine Blutungen erscheinen größer als sie sind (Blooming).",ctx_dwi2:"Der b-Wert misst, wie frei sich Wasser bewegt. Beim akuten Infarkt ist die Diffusion eingeschränkt → hell. Vorsicht: auch langes T2 kann hell erscheinen (T2-Durchscheinen).",ctx_adc2:"Die ADC-Karte rechnet das T2-Durchscheinen heraus. Echte Restriktion ist hier dunkel – DWI und ADC immer zusammen beurteilen.",
         ctx_se:"Spin-Echo (SE): Das Grundverfahren mit 90°- und 180°-Puls. TR steuert den T1-, TE den T2-Anteil — so wählst du T1-, T2- oder PD-Wichtung.",
         ctx_ir:"Inversion Recovery (IR): Ein vorgeschalteter 180°-Puls kippt die Magnetisierung, danach wartet man die Zeit TI. Liegt ein Gewebe im Nulldurchgang, wird sein Signal unterdrückt — daraus entstehen FLAIR (Liquor weg) und STIR (Fett weg).",
         ctx_gre:"Gradientenecho (GRE): Statt 180°-Puls ein kleiner Flipwinkel α, refokussiert per Gradient. Schnell, T2*-gewichtet und empfindlich für Suszeptibilität — Basis vieler 3D- und Angio-Sequenzen.",
@@ -442,7 +450,7 @@
         wMix:"mixed",tCsf:"CSF",tGm:"Gray matter",tWm:"White matter",tFat:"Fat / scalp",tLes:"Lesion",
         quizTitle:"Quiz · name the weighting",quizExit:"Exit quiz",qPrompt:"Which weighting is shown here?",qNext:"Next question",
         qGood:"Correct! ",qBad:"Not quite. Answer: ",ernst:"Ernst ≈",
-        glossTitle:"Glossary · what the parameters mean",eqADC:"ADC map: brightness ∝ ADC",viewerTitle:"Viewer",wlReset:"Reset",sliceLbl:"Slice",winLbl:"Window · contrast",levLbl:"Brightness",planeLbl:"Plane",noiseLbl:"Noise",pngBtn:"PNG",shareBtn:"Link",probeHint:"Tap the image for values",lesTypeLbl:"Type",tEdema:"Edema (vasogenic)",tInfarct:"Infarct (acute)",tLacune:"Lacune (chronic)",tWmh:"WMH / gliosis",tTumor:"Tumor",tMs:"MS lesion",tAbscess:"Abscess",tHemAcute:"Haemorrhage (acute)",tHemSub:"Haemorrhage (subacute)",anaTitle:"Analysis",cnrLbl:"Contrast",sweepTE:"signal vs TE",sweepB:"signal vs b",optTE:"max @ TE {x}",optB:"max @ b {x}",shareCopied:"Link copied",sigWord:"signal",cmpBtn:"Compare",anatBtn:"Anatomy labels",uiSimple:"Simple",uiPro:"Pro",grpDisplay:"Display",grpTools:"Tools",grpAnalysis:"Analysis",fieldLblG:"Field strength",winfoHdr:"Image type · explanation",brightWord:"bright",darkWord:"dark",moreWord:"more ▾",lessWord:"less ▴",learnMore:"Learn more →",kpTitle:"Key points · what matters",tryLabel:"Try this",glanceTitle:"Contrast at a glance",ctx_se2:"Short TR/short TE emphasises T1, long TR/long TE emphasises T2, long TR/short TE gives PD. Spin echo is robust against field inhomogeneity but slower than gradient echo.",ctx_tse:"Turbo spin echo (TSE): one 90° pulse, then a whole train of 180° pulses – many k-space lines per TR, so much faster. Contrast like SE (effective TE), but fat stays bright on T2.",ctx_tse2:"Contrast is set by the effective TE (the central k-space line). The closely spaced 180° pulses disrupt fat's J-coupling, so fat looks brighter on T2 TSE than on conventional SE (hence it is often combined with fat suppression). Long echo trains (high turbo factor/ETL) cause blurring; the many refocusing pulses also make TSE less sensitive to susceptibility (bleeds harder to see) and raise SAR.",ctx_ir2:"The 180° prep pulse inverts the magnetization; after time TI every tissue passes through its null. Hit it exactly and that tissue gives no signal – this is how FLAIR nulls CSF and STIR nulls fat.",ctx_gre2:"Instead of a 180° pulse, GRE uses gradients and a small flip angle – fast but sensitive to field inhomogeneity (T2*). Large flip + short TR → T1, long TE → T2*.",ctx_swi2:"SWI also uses the phase information and is extremely sensitive to blood products and iron. Small bleeds look larger than they are (blooming).",ctx_dwi2:"The b-value measures how freely water moves. In acute infarct diffusion is restricted → bright. Caution: long T2 can also look bright (T2 shine-through).",ctx_adc2:"The ADC map removes T2 shine-through. True restriction is dark here – always read DWI and ADC together.",
+        glossTitle:"Glossary · what the parameters mean",eqADC:"ADC map: brightness ∝ ADC",viewerTitle:"Viewer",wlReset:"Reset",sliceLbl:"Slice",winLbl:"Window · contrast",levLbl:"Brightness",planeLbl:"Plane",noiseLbl:"Noise",pngBtn:"PNG",shareBtn:"Link",probeHint:"Tap the image for values",lesTypeLbl:"Type",tEdema:"Edema (vasogenic)",tInfarct:"Infarct (acute)",tLacune:"Lacune (chronic)",tWmh:"WMH / gliosis",tTumor:"Tumor",tMs:"MS lesion",tAbscess:"Abscess",tHemAcute:"Haemorrhage (acute)",tHemSub:"Haemorrhage (subacute)",anaTitle:"Analysis",cnrLbl:"Contrast",sweepTE:"signal vs TE",sweepB:"signal vs b",optTE:"max @ TE {x}",optB:"max @ b {x}",shareCopied:"Link copied",sigWord:"signal",cmpBtn:"Compare",anatBtn:"Anatomy labels",uiSimple:"Simple",uiPro:"Pro",uiExplore:"Explore",grpDisplay:"Display",grpTools:"Tools",grpAnalysis:"Analysis",fieldLblG:"Field strength",winfoHdr:"Image type · explanation",brightWord:"bright",darkWord:"dark",moreWord:"more ▾",lessWord:"less ▴",learnMore:"Learn more →",kpTitle:"Key points · what matters",tryLabel:"Try this",glanceTitle:"Contrast at a glance",ctx_se2:"Short TR/short TE emphasises T1, long TR/long TE emphasises T2, long TR/short TE gives PD. Spin echo is robust against field inhomogeneity but slower than gradient echo.",ctx_tse:"Turbo spin echo (TSE): one 90° pulse, then a whole train of 180° pulses – many k-space lines per TR, so much faster. Contrast like SE (effective TE), but fat stays bright on T2.",ctx_tse2:"Contrast is set by the effective TE (the central k-space line). The closely spaced 180° pulses disrupt fat's J-coupling, so fat looks brighter on T2 TSE than on conventional SE (hence it is often combined with fat suppression). Long echo trains (high turbo factor/ETL) cause blurring; the many refocusing pulses also make TSE less sensitive to susceptibility (bleeds harder to see) and raise SAR.",ctx_ir2:"The 180° prep pulse inverts the magnetization; after time TI every tissue passes through its null. Hit it exactly and that tissue gives no signal – this is how FLAIR nulls CSF and STIR nulls fat.",ctx_gre2:"Instead of a 180° pulse, GRE uses gradients and a small flip angle – fast but sensitive to field inhomogeneity (T2*). Large flip + short TR → T1, long TE → T2*.",ctx_swi2:"SWI also uses the phase information and is extremely sensitive to blood products and iron. Small bleeds look larger than they are (blooming).",ctx_dwi2:"The b-value measures how freely water moves. In acute infarct diffusion is restricted → bright. Caution: long T2 can also look bright (T2 shine-through).",ctx_adc2:"The ADC map removes T2 shine-through. True restriction is dark here – always read DWI and ADC together.",
         ctx_se:"Spin echo (SE): The basic method with 90° and 180° pulses. TR sets the T1 contribution, TE the T2 one — that lets you pick T1-, T2- or PD-weighting.",
         ctx_ir:"Inversion recovery (IR): An extra 180° pulse flips the magnetization, then you wait the time TI. A tissue at its null point is suppressed — this is how FLAIR (no CSF) and STIR (no fat) are made.",
         ctx_gre:"Gradient echo (GRE): Instead of a 180° pulse a small flip angle α, refocused by a gradient. Fast, T2*-weighted and sensitive to susceptibility — the basis of many 3D and angio sequences.",
@@ -564,7 +572,7 @@
   };
   function applyLesType(){const v=LESTYPES[lesType][field];T.les.T1=v[0];T.les.T2=v[1];T.les.T2s=v[2];T.les.ADC=v[3];}
   function applyField(f){field=f;const F=FIELD[f];for(const k in F){T[k].T1=F[k][0];T[k].T2=F[k][1];T[k].T2s=F[k][2];}
-    T.fat.T2tse=Math.round(T.fat.T2*2.4);
+    T.fat.T2tse=Math.round(T.fat.T2*3.0);
     applyLesType();
     document.getElementById("field-15").setAttribute("aria-pressed",f==="15");
     document.getElementById("field-3").setAttribute("aria-pressed",f==="3");
@@ -581,6 +589,7 @@
     return 0;
   }
   const cv=document.getElementById("cv"),ctx=cv.getContext("2d"),img=ctx.createImageData(W,H);
+  const TARGET_MEAN=0.58; /* gleiche Gesamthelligkeit aller Wichtungen; hoeher = dunkler, niedriger = heller */
   function fieldBuf(p){const buf=new Float32Array(NP);let nrm=1;
     if(p.mode==="dwi"&&p.adc){
       for(let i=0;i<NP;i++){let a=GM[i]*T.gray.ADC+WM[i]*T.white.ADC+CSF[i]*T.csf.ADC+FAT[i]*T.fat.ADC;
@@ -589,12 +598,16 @@
     }else{
       const sC=tsig(T.csf,p),sG=tsig(T.gray,p),sW=tsig(T.white,p),sF=tsig(T.fat,p),sL=tsig(T.les,p);
       let bloom=0;if((p.mode==="gre"||p.mode==="swi")&&microbleed&&MBr>0){bloom=(p.mode==="swi"?1.0:0.55)*Math.max(0,Math.min(1.4,p.TE/(p.mode==="swi"?38:28)));}
-      const rb=(0.022*W)*(0.022*W)*(1+3*bloom);let mx=1e-6;
+      const rb=(0.022*W)*(0.022*W)*(1+3*bloom);
+      let wsum=0,vsum=0;
       for(let i=0;i<NP;i++){let v=GM[i]*sG+WM[i]*sW+CSF[i]*sC+FAT[i]*sF;
         if(lesion){const lf=LES[i];v=v*(1-lf)+sL*lf;}
         if(bloom>0){const m=Math.exp(-MBD2[i]/rb);v=v*(1-bloom*m);}
-        buf[i]=v;if(v>mx)mx=v;}
-      nrm=mx;
+        buf[i]=v;
+        const w=GM[i]+WM[i]+CSF[i]+FAT[i];if(w>0.05){wsum+=w;vsum+=v*w;}}
+      /* gleiche mittlere Hirnhelligkeit über alle Wichtungen (Kontrast bleibt) */
+      const meanSig=wsum>0?vsum/wsum:Math.max(sG,sW,1e-3);
+      nrm=Math.max(meanSig/TARGET_MEAN,1e-3);
     }
     return {buf:buf,nrm:nrm};
   }
@@ -605,7 +618,7 @@
     for(let y=0;y<H;y++)for(let x=0;x<W;x++){const i=y*W+x;
       const bb=(compareOn&&x>=half)?cmp:main;let s=bb.buf[i]/bb.nrm;s=(s-lo)*inv;
       if(sig>0){const g=(Math.random()+Math.random()+Math.random()+Math.random()-2);s+=g*sig;}
-      s=s<0?0:s>1?1:s;const v=Math.pow(s,0.85)*255|0,q=i*4;d[q]=v;d[q+1]=v;d[q+2]=v;d[q+3]=255;}
+      s=s<0?0:s>1?1:s;const v=Math.pow(s,1.7)*255|0,q=i*4;d[q]=v;d[q+1]=v;d[q+2]=v;d[q+3]=255;}
     ctx.putImageData(img,0,0);
     if(compareOn){ctx.strokeStyle="rgba(78,201,201,.7)";ctx.lineWidth=0.7;ctx.beginPath();ctx.moveTo(half,0);ctx.lineTo(half,H);ctx.stroke();}
     if(probe&&!compareOn){ctx.strokeStyle="#4ec9c9";ctx.lineWidth=0.8;const px=probe.px+0.5,py=probe.py+0.5;
@@ -657,11 +670,11 @@
     if(c.nullK)p.TI=nullTI(T[c.nullK].T1,p.TR);return p;}
   function compareParams(){return presetParams(cmpPreset);}
   const WINFO={de:{
-    t1:{t:"T1-gewichtet",d:"Betont T1-Unterschiede – gut für Anatomie. Kontrastmittel macht Gewebe hier hell.",b:"Fett, weiße Substanz",k:"Liquor"},
-    t2:{t:"T2-gewichtet",d:"Betont T2-Unterschiede. Wasser und Ödem leuchten – viele Pathologien werden sichtbar.",b:"Liquor, Ödem",k:"weiße Substanz (dunkler als graue)"},
-    pd:{t:"Protonendichte",d:"Kaum T1-/T2-Gewichtung; die Helligkeit folgt der Protonendichte. Eher flauer Kontrast.",b:"Gewebe mit hoher Protonendichte",k:"–"},
+    t1:{t:"T1-gewichtet",d:"Betont T1-Unterschiede – gut für Anatomie. Kontrastmittel macht Gewebe hier hell.",b:"Fett, Knochenmark; weiße > graue Substanz",k:"Liquor, Knochen, Luft"},
+    t2:{t:"T2-gewichtet",d:"Betont T2-Unterschiede. Wasser und Ödem leuchten – viele Pathologien werden sichtbar.",b:"Liquor, Ödem, Fett; graue > weiße Substanz",k:"weiße Substanz, Knochen, Luft"},
+    pd:{t:"Protonendichte",d:"Kaum T1-/T2-Gewichtung; die Helligkeit folgt der Protonendichte. Eher flauer Kontrast.",b:"Fett; graue > weiße Substanz, Liquor mittel",k:"Knochen, Luft (insgesamt flau)"},
     mix:{t:"Gemischte Wichtung",d:"TR/TE liegen zwischen den reinen Wichtungen – der Kontrast ist gemischt. Stelle TR/TE deutlicher für T1, T2 oder PD.",b:"–",k:"–"},
-    flair:{t:"FLAIR",d:"Inversion mit langem TI – Liquor wird unterdrückt. Periventrikuläre Läsionen werden so sehr auffällig.",b:"Läsionen, Ödem",k:"Liquor (unterdrückt)"},
+    flair:{t:"FLAIR",d:"Inversion mit langem TI – Liquor wird unterdrückt. Periventrikuläre Läsionen werden so sehr auffällig.",b:"Läsionen, Ödem, Fett; graue > weiße Substanz",k:"Liquor (unterdrückt), Knochen, Luft"},
     stir:{t:"STIR",d:"Inversion mit kurzem TI – Fett wird unterdrückt. Gut, um Ödem neben Fett zu erkennen.",b:"Ödem / Flüssigkeit",k:"Fett (unterdrückt)"},
     ir:{t:"Inversion Recovery",d:"180°-Vorpuls und Wartezeit TI. Je nach TI wird ein Gewebe ausgelöscht (Liquor → FLAIR, Fett → STIR).",b:"je nach TI",k:"Gewebe am Nullpunkt"},
     t1gre:{t:"T1-GRE",d:"Schnelle Gradientenecho-Sequenz mit T1-Kontrast – Basis vieler 3D- und Kontrastmittel-Aufnahmen.",b:"Fett, weiße Substanz",k:"Liquor"},
@@ -670,11 +683,11 @@
     dwi:{t:"DWI (Diffusion)",d:"Misst die Beweglichkeit von Wasser. Ein akuter Infarkt schränkt die Diffusion ein → hell.",b:"akuter Infarkt",k:"Liquor"},
     adc:{t:"ADC-Karte",d:"Quantitative Diffusionskarte ohne T2-Durchscheinen. Echte Restriktion ist hier dunkel (Gegenteil zu DWI).",b:"Liquor",k:"akuter Infarkt"}},
    en:{
-    t1:{t:"T1-weighted",d:"Emphasises T1 differences – great for anatomy. Contrast agent makes tissue bright here.",b:"fat, white matter",k:"CSF"},
-    t2:{t:"T2-weighted",d:"Emphasises T2 differences. Water and oedema glow – many pathologies become visible.",b:"CSF, oedema",k:"white matter (darker than grey)"},
-    pd:{t:"Proton density",d:"Little T1/T2 weighting; brightness follows proton density. Rather flat contrast.",b:"high proton-density tissue",k:"–"},
+    t1:{t:"T1-weighted",d:"Emphasises T1 differences – great for anatomy. Contrast agent makes tissue bright here.",b:"fat, bone marrow; white > grey matter",k:"CSF, bone, air"},
+    t2:{t:"T2-weighted",d:"Emphasises T2 differences. Water and oedema glow – many pathologies become visible.",b:"CSF, oedema, fat; grey > white matter",k:"white matter, bone, air"},
+    pd:{t:"Proton density",d:"Little T1/T2 weighting; brightness follows proton density. Rather flat contrast.",b:"fat; grey > white matter, CSF intermediate",k:"bone, air (overall flat)"},
     mix:{t:"Mixed weighting",d:"TR/TE sit between the pure weightings – contrast is mixed. Set TR/TE more clearly for T1, T2 or PD.",b:"–",k:"–"},
-    flair:{t:"FLAIR",d:"Inversion with long TI – CSF is suppressed, making periventricular lesions stand out.",b:"lesions, oedema",k:"CSF (suppressed)"},
+    flair:{t:"FLAIR",d:"Inversion with long TI – CSF is suppressed, making periventricular lesions stand out.",b:"lesions, oedema, fat; grey > white matter",k:"CSF (suppressed), bone, air"},
     stir:{t:"STIR",d:"Inversion with short TI – fat is suppressed. Good for seeing oedema next to fat.",b:"oedema / fluid",k:"fat (suppressed)"},
     ir:{t:"Inversion recovery",d:"180° prep pulse then wait TI. Depending on TI a tissue is nulled (CSF → FLAIR, fat → STIR).",b:"depends on TI",k:"tissue at its null"},
     t1gre:{t:"T1-GRE",d:"Fast gradient-echo with T1 contrast – the basis of many 3D and contrast-enhanced scans.",b:"fat, white matter",k:"CSF"},
@@ -794,14 +807,7 @@
     for(const s of arr){const li=document.createElement("li");li.textContent=s;ul.appendChild(li);}
     $("kpCard").hidden=(arr.length===0);}
 
-  var _rafPending=false;
   function update(){
-    // Mehrere Eingaben pro Bildschirm-Frame in einen einzigen Render zusammenfassen
-    if(_rafPending)return;
-    _rafPending=true;
-    requestAnimationFrame(function(){_rafPending=false;_updateNow();});
-  }
-  function _updateNow(){
     const p=curParams(),t=I[lang];
     $("tr-val").textContent=p.TR;$("te-val").textContent=p.TE;$("ti-val").textContent=p.TI;$("flip-val").textContent=p.flip;$("b-val").textContent=p.b;
     // overlay + ctx column
@@ -824,9 +830,11 @@
     else{wEl.textContent=c.w==="MIX"?t.wMix:c.w;wEl.classList.toggle("mixed",c.w==="MIX");eqBox.innerHTML=eqHTML(p,t,c);}
     // legend signal + ctx values
     const keys=KEYS.slice();if(lesion)keys.push("les");
-    let vals={},mx=1e-6;
-    for(const k of keys){let v;if(mode==="dwi"&&dwiView==="adc")v=T[k].ADC/3.0;else v=tsig(T[k],p);vals[k]=v;if(v>mx)mx=v;}
-    for(const k of keys){if(!rows[k])continue;rows[k].bar.style.width=(100*vals[k]/mx).toFixed(0)+"%";
+    const _lo=winL-winW/2,_inv=1/winW; /* gleiche Pipeline wie das Bild: Normierung + Fenster + Gamma */
+    for(const k of keys){if(!rows[k])continue;
+      let s=(mode==="dwi"&&dwiView==="adc")?(T[k].ADC/3.0):(tsig(T[k],p)/lastNrm);
+      s=(s-_lo)*_inv;s=s<0?0:s>1?1:s;const disp=Math.pow(s,1.7);
+      rows[k].bar.style.width=(100*disp).toFixed(0)+"%";
       rows[k].ctx.textContent=(actx==="T2")?T[k].T2:(actx==="T2*")?T[k].T2s:T[k].ADC.toFixed(2);}
     const chKey=(mode==="dwi")?(dwiView==="adc"?"ctx_adc":"ctx_dwi"):("ctx_"+mode);
     $("ctxShort").innerHTML=(t[chKey]||"").replace(/^([^:]+:)/,'<b>$1</b>');
@@ -837,7 +845,8 @@
       const fr={csf:CSF[i],gray:GM[i],white:WM[i],fat:FAT[i]};if(lesion)fr.les=LES[i];
       let dk="csf",dv=-1;for(const k in fr){if(fr[k]>dv){dv=fr[k];dk=k;}}
       if(dv<0.08)$("probeRead").textContent="—";
-      else $("probeRead").innerHTML='<span class="tis">'+t[T[dk].key]+'</span> · '+t.sigWord+' <b>'+(lastBuf[i]/lastNrm).toFixed(2)+'</b>';}
+      else{let s=lastBuf[i]/lastNrm;s=(s-(winL-winW/2))/winW;s=s<0?0:s>1?1:s;
+        $("probeRead").innerHTML='<span class="tis">'+t[T[dk].key]+'</span> · '+t.sigWord+' <b>'+Math.pow(s,1.7).toFixed(2)+'</b>';}}
     if(compareOn){$("cmpL").hidden=false;$("cmpR").hidden=false;$("cmpL").textContent=(c.w==="MIX"?t.wMix:c.w);$("cmpR").textContent=(CMP[cmpPreset]||CMP.t2).tag;}
     else{$("cmpL").hidden=true;$("cmpR").hidden=true;}
     renderAnatomy();setOrient();updateWInfo(c);updateKP(c);maybeGlance();
@@ -1022,16 +1031,14 @@
   buildCmpSel();
   buildGlance();
   const wrapEl=document.querySelector(".wrap");
-  function setUI(pro){wrapEl.classList.toggle("pro",pro);$("ui-pro").setAttribute("aria-pressed",pro);$("ui-simple").setAttribute("aria-pressed",!pro);}
-  $("ui-simple").addEventListener("click",()=>setUI(false));
-  $("ui-pro").addEventListener("click",()=>setUI(true));
+  function setUI(pro){wrapEl.classList.toggle("pro",pro);}
   $("cmpTog").addEventListener("click",()=>{compareOn=!compareOn;$("cmpTog").setAttribute("aria-pressed",compareOn);$("cmpSel").disabled=!compareOn;if(compareOn)probe=null;update();});
   $("cmpSel").addEventListener("change",e=>{cmpPreset=e.target.value;update();});
   $("anatTog").addEventListener("click",()=>{anatOn=!anatOn;$("anatTog").setAttribute("aria-pressed",anatOn);update();});
   $("ctxMoreBtn").addEventListener("click",()=>{const l=$("ctxLong");l.hidden=!l.hidden;$("ctxMoreBtn").textContent=l.hidden?I[lang].moreWord:I[lang].lessWord;});
   cv.addEventListener("click",e=>{const r=cv.getBoundingClientRect();const px=Math.floor((e.clientX-r.left)/r.width*W),py=Math.floor((e.clientY-r.top)/r.height*H);
     if(px>=0&&px<W&&py>=0&&py<H){probe={px:px,py:py};update();}});
-  $("pngBtn").addEventListener("click",()=>{if(_rafPending){_rafPending=false;_updateNow();}const tmp=document.createElement("canvas"),SZ=512;tmp.width=tmp.height=SZ;const tc=tmp.getContext("2d");tc.imageSmoothingEnabled=false;tc.drawImage(cv,0,0,SZ,SZ);
+  $("pngBtn").addEventListener("click",()=>{const tmp=document.createElement("canvas"),SZ=512;tmp.width=tmp.height=SZ;const tc=tmp.getContext("2d");tc.imageSmoothingEnabled=false;tc.drawImage(cv,0,0,SZ,SZ);
     const a=document.createElement("a");a.download="mri_"+plane+"_"+DATA.views[plane].lab+DATA.views[plane].idx[sliceIdx]+".png";a.href=tmp.toDataURL("image/png");a.click();});
   function encodeState(){return location.origin+location.pathname+"#"+[mode,trEl.value,teEl.value,tiEl.value,flipEl.value,bEl.value,field,plane,sliceIdx,lesion?1:0,lesType,microbleed?1:0,dwiView,winW,winL,noiseLv,cnrA,cnrB,compareOn?1:0,cmpPreset,anatOn?1:0,wrapEl.classList.contains("pro")?1:0].join(",");}
   $("shareBtn").addEventListener("click",()=>{const url=encodeState();location.hash=url.split("#")[1];const el=$("shareBtn"),t=I[lang];
